@@ -1,5 +1,6 @@
 package com.example.universalbacklog
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -19,6 +20,43 @@ class MainActivity : AppCompatActivity() {
         val emptyText = findViewById<TextView>(R.id.emptyText)
         val backlogList = findViewById<LinearLayout>(R.id.backlogList)
 
+        val sharedPreferences =
+            getSharedPreferences("backlog_preferences", Context.MODE_PRIVATE)
+
+        val savedItems =
+            sharedPreferences.getStringSet("backlog_items", emptySet()) ?: emptySet()
+
+        if (savedItems.isNotEmpty()) {
+            emptyText.visibility = View.GONE
+
+            for (item in savedItems) {
+                val itemText = TextView(this)
+                itemText.text = "• $item"
+                itemText.textSize = 16f
+                itemText.setPadding(0, 8, 0, 8)
+
+                itemText.setOnClickListener {
+                    backlogList.removeView(itemText)
+
+                    val updatedItems =
+                        sharedPreferences.getStringSet("backlog_items", emptySet())
+                            ?.toMutableSet() ?: mutableSetOf()
+
+                    updatedItems.remove(item)
+
+                    sharedPreferences.edit()
+                        .putStringSet("backlog_items", updatedItems)
+                        .apply()
+
+                    if (backlogList.childCount == 1) {
+                        emptyText.visibility = View.VISIBLE
+                    }
+                }
+
+                backlogList.addView(itemText)
+            }
+        }
+
         addItemButton.setOnClickListener {
             val input = EditText(this)
             input.hint = "Enter backlog item"
@@ -31,6 +69,16 @@ class MainActivity : AppCompatActivity() {
 
                     if (item.isNotEmpty()) {
                         emptyText.visibility = View.GONE
+
+                        val updatedItems =
+                            sharedPreferences.getStringSet("backlog_items", emptySet())
+                                ?.toMutableSet() ?: mutableSetOf()
+
+                        updatedItems.add(item)
+
+                        sharedPreferences.edit()
+                            .putStringSet("backlog_items", updatedItems)
+                            .apply()
 
                         val itemText = TextView(this)
                         itemText.text = "• $item"
