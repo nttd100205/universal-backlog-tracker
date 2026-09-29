@@ -1,8 +1,10 @@
 package com.example.universalbacklog
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +17,7 @@ class MainActivity : AppCompatActivity() {
 
         val addItemButton = findViewById<Button>(R.id.addItemButton)
         val emptyText = findViewById<TextView>(R.id.emptyText)
+        val backlogList = findViewById<LinearLayout>(R.id.backlogList)
 
         addItemButton.setOnClickListener {
             val input = EditText(this)
@@ -27,7 +30,14 @@ class MainActivity : AppCompatActivity() {
                     val item = input.text.toString().trim()
 
                     if (item.isNotEmpty()) {
-                        emptyText.text = item
+                        emptyText.visibility = View.GONE
+
+                        val itemText = TextView(this)
+                        itemText.text = "• $item"
+                        itemText.textSize = 16f
+                        itemText.setPadding(0, 8, 0, 8)
+
+                        backlogList.addView(itemText)
                     }
                 }
                 .setNegativeButton("Cancel", null)

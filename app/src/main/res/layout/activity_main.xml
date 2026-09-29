@@ -30,15 +30,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleText" />
 
-    <TextView
-        android:id="@+id/emptyText"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/backlogList"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Your backlog is empty."
-        android:textSize="16sp"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/backlogTitle" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/backlogTitle">
+
+        <TextView
+            android:id="@+id/emptyText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your backlog is empty."
+            android:textSize="16sp" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/addItemButton"
