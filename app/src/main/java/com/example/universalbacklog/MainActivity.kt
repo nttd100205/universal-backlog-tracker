@@ -37,6 +37,14 @@ class MainActivity : AppCompatActivity() {
                         itemText.textSize = 16f
                         itemText.setPadding(0, 8, 0, 8)
 
+                        itemText.setOnClickListener {
+                            backlogList.removeView(itemText)
+
+                            if (backlogList.childCount == 1) {
+                                emptyText.visibility = View.VISIBLE
+                            }
+                        }
+
                         backlogList.addView(itemText)
                     }
                 }
